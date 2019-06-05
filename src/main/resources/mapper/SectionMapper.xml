@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.policedog.craftadmin.dao.SectionDAO">
+    <select id="selectAll" resultType="Section">
+        SELECT
+          a.id,
+          a.courseid,
+          a.title,
+          a.sectionid,
+          a.sectiondate,
+          a.created,
+          a.updated
+        FROM
+          section AS a
+    </select>
+
+    <delete id="delete">
+      DELETE FROM videomsg WHERE id = #{id}
+    </delete>
+
+    <select id="getByCourseId" resultType="Section">
+    SELECT
+      a.id,
+      a.courseid,
+      a.title,
+      a.sectionid,
+      a.sectiondate,
+      a.created,
+      a.updated
+    FROM
+      section AS a
+    WHERE
+      a.courseid = #{courseid}
+    </select>
+
+    <update id="update">
+    UPDATE
+      section
+    SET
+      courseid = #{courseid},
+      title = #{title},
+      sectionid = #{sectionid},
+      sectiondate = #{sectiondate},
+      created = #{created},
+      updated = #{updated}
+    WHERE id = #{id}
+    </update>
+
+    <delete id="deleteMulti">
+        DELETE FROM section
+        WHERE id IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

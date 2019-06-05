@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.policedog.craftadmin.dao.ArticleDAO">
+    <select id="selectAll" resultType="Article">
+     SELECT
+        a.id,
+        a.title,
+        a.writerid,
+        a.content,
+        a.created,
+        a.updated
+        FROM
+          article AS a
+    </select>
+
+    <insert id="insert">
+    INSERT INTO article (
+      title,
+      writerid,
+      content,
+      created,
+      updated
+    )
+    VALUES
+      (
+        #{title},
+        #{writerid},
+        #{content},
+        #{created},
+        #{updated}
+      )
+    </insert>
+
+    <delete id="delete">
+      DELETE FROM article WHERE id = #{id}
+    </delete>
+
+    <select id="getById" resultType="Article">
+    SELECT
+      a.id,
+      a.title,
+      a.writerid,
+      a.content,
+      a.created,
+      a.updated
+    FROM
+      article AS a
+    WHERE
+      a.id = #{id}
+    </select>
+
+
+    <update id="update">
+    UPDATE
+      article
+    SET
+      title = #{title},
+      writerid = #{writerid},
+      content = #{content},
+      updated = #{updated}
+    WHERE id = #{id}
+    </update>
+
+    <select id="search" resultType="Article">
+        SELECT
+        a.id,
+        a.title,
+        a.writerid,
+        a.content,
+        a.created,
+        a.updated
+        FROM
+        article AS a
+        <where>
+            <if test="title!=null and title!=''">
+                OR a.title LIKE CONCAT ('%',#{title},'%')
+            </if>
+            <if test="content!=null and content!=''">
+                OR a.content LIKE CONCAT ('%',#{content},'%')
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteMulti">
+        DELETE FROM article
+        WHERE id IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteMultiByStudentId">
+        DELETE FROM article
+        WHERE writerid IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

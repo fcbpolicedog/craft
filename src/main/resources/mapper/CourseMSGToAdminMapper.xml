@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.policedog.craftadmin.dao.CourseMSGToAdminDAO">
+    <select id="selectAll" resultType="CourseMSGToAdmin">
+        SELECT
+          a.id,
+          a.courseid,
+          a.status,
+          a.courseupdate
+        FROM
+          coursemsgtoadmin AS a
+    </select>
+
+    <insert id="insert">
+    INSERT INTO coursemsgtoadmin (
+          courseid,
+          status,
+          courseupdate
+    )
+    VALUES
+      (
+        #{courseid},
+        #{status},
+        #{courseupdate}
+      )
+    </insert>
+
+
+    <select id="getById" resultType="CourseMSGToAdmin">
+    SELECT
+      a.id,
+      a.courseid,
+      a.status,
+      a.courseupdate
+    FROM
+      coursemsgtoadmin AS a
+    WHERE
+      a.id = #{id}
+    </select>
+
+    <update id="update">
+    UPDATE
+      coursemsgtoadmin
+    SET
+      id = #{id},
+      courseid = #{courseid},
+      status = #{status},
+      courseupdate = #{courseupdate}
+    WHERE id = #{id}
+    </update>
+
+
+    <select id="search" resultType="CourseMSGToAdmin">
+        SELECT
+        a.id,
+        a.courseid,
+        a.status,
+        a.courseupdate
+        FROM
+        coursemsgtoadmin AS a
+        <where>
+            <if test="courseid!=null and courseid!=''">
+                OR a.courseid LIKE CONCAT ('%',#{courseid},'%')
+            </if>
+            <if test="status!=null and status!=''">
+                OR a.status LIKE CONCAT ('%',#{status},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

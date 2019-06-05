@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.policedog.craftadmin.dao.SelectedCourseDAO">
+    <select id="selectAll" resultType="SelectedCourse">
+        SELECT
+          a.courseid,
+          a.studentid,
+          a.mark
+        FROM
+          selectedcourse AS a
+    </select>
+
+    <select id="selectStudentIdByCourseId" resultType="Long">
+        SELECT
+        a.studentid
+        FROM
+        selectedcourse as a
+        WHERE
+        a.courseid = #{courseid}
+    </select>
+
+    <insert id="insert">
+    INSERT INTO selectedcourse (
+          courseid,
+          studentid,
+          mark
+    )
+    VALUES
+      (
+        #{courseid},
+        #{studentid},
+        #{mark}
+      )
+    </insert>
+
+    <delete id="deleteMultiByStudentId">
+        DELETE FROM selectedcourse
+        WHERE studentid IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteMultiByCourseId">
+        DELETE FROM selectedcourse
+        WHERE courseid IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

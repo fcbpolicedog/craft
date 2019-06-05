@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.policedog.craftadmin.dao.StudentDAO">
+    <select id="selectAll" resultType="Student">
+        SELECT
+          a.id,
+          a.username,
+          a.password,
+          a.phone,
+          a.email,
+          a.created,
+          a.updated
+        FROM
+          student AS a
+    </select>
+
+    <insert id="insert">
+    INSERT INTO student (
+      username,
+      password,
+      phone,
+      email,
+      created,
+      updated
+    )
+    VALUES
+      (
+        #{username},
+        #{password},
+        #{phone},
+        #{email},
+        #{created},
+        #{updated}
+      )
+    </insert>
+
+    <delete id="delete">
+      DELETE FROM student WHERE id = #{id}
+    </delete>
+
+    <select id="getById" resultType="Student">
+    SELECT
+      a.id,
+      a.username,
+      a.password,
+      a.phone,
+      a.email,
+      a.created,
+      a.updated
+    FROM
+      student AS a
+    WHERE
+      a.id = #{id}
+    </select>
+
+    <update id="update">
+    UPDATE
+      student
+    SET
+      username = #{username},
+      password = #{password},
+      phone = #{phone},
+      email = #{email},
+      created = #{created},
+      updated = #{updated}
+    WHERE id = #{id}
+    </update>
+
+    <!-- 模糊匹配-->
+    <select id="selectByUsername" resultType="Student">
+    SELECT
+      a.id,
+      a.username,
+      a.password,
+      a.phone,
+      a.email,
+      a.created,
+      a.updated
+    FROM
+      student AS a
+    WHERE
+      a.username LIKE CONCAT ('%', #{username}, '%')
+    </select>
+
+    <!--根据邮箱查询用户 -->
+    <select id="getByEmail" resultType="Student">
+        SELECT
+          a.id,
+          a.username,
+          a.password,
+          a.phone,
+          a.email,
+          a.created,
+          a.updated
+        FROM
+          student AS a
+        where
+          a.email=#{email}
+    </select>
+    <select id="search" resultType="Student">
+        SELECT
+        a.id,
+        a.username,
+        a.password,
+        a.phone,
+        a.email,
+        a.created,
+        a.updated
+        FROM
+        student AS a
+        <where>
+            <if test="username!=null and username!=''">
+                OR a.username LIKE CONCAT ('%',#{username},'%')
+            </if>
+            <if test="phone!=null and phone!=''">
+                OR a.phone LIKE CONCAT ('%',#{phone},'%')
+            </if>
+            <if test="email!=null and email!=''">
+                OR a.email LIKE CONCAT ('%',#{email},'%')
+            </if>
+        </where>
+    </select>
+    <delete id="deleteMulti">
+        DELETE FROM student
+        WHERE id IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

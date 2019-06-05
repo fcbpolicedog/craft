@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.policedog.craftadmin.dao.CommunityDAO">
+    <select id="selectAll" resultType="Community">
+     SELECT
+          a.id,
+          a.isStudent,
+          a.userid,
+          a.isQuestion,
+          a.fatherid,
+          a.content,
+          a.created,
+          a.updated
+        FROM
+          community AS a
+        WHERE
+          a.isQuestion = 1
+    </select>
+
+    <insert id="insert">
+    INSERT INTO community (
+      isStudent,
+      userid,
+      isQuestion,
+      fatherid,
+      content,
+      created,
+      updated
+    )
+    VALUES
+      (
+        #{isStudent},
+        #{userid},
+        #{isQuestion},
+        #{fatherid},
+        #{content},
+        #{created},
+        #{updated}
+      )
+    </insert>
+
+    <delete id="delete">
+      DELETE FROM community WHERE id = #{id}
+    </delete>
+
+    <select id="getBycommunityId" resultType="Community">
+    SELECT
+      a.id,
+      a.isStudent,
+      a.userid,
+      a.isQuestion,
+      a.fatherid,
+      a.content,
+      a.created,
+      a.updated
+    FROM
+      community AS a
+    WHERE
+      a.id = #{id}
+    </select>
+
+    <select id="getSonByFatherId" resultType="Community">
+      SELECT
+      a.id,
+      a.isStudent,
+      a.userid,
+      a.isQuestion,
+      a.fatherid,
+      a.content,
+      a.created,
+      a.updated
+    FROM
+      community AS a
+    WHERE
+      a.fatherid = #{fatherid}
+    </select>
+
+    <update id="update">
+    UPDATE
+      community
+    SET
+      isStudent = #{isStudent},
+      userid = #{userid},
+      isQuestion = #{isQuestion},
+      fatherid = #{fatherid},
+      content = #{content},
+      updated = #{updated}
+    WHERE id = #{id}
+    </update>
+
+    <delete id="deleteMulti">
+        DELETE FROM community
+        WHERE id IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

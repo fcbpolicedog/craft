@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.policedog.craftadmin.dao.CourseDAO">
+    <select id="selectAll" resultType="Course">
+        SELECT
+          a.courseid,
+          a.coursename,
+          a.teacherid,
+          a.coursetype,
+          a.courseinfo,
+          a.teacherinfo,
+          a.studentnum,
+          a.pic,
+          a.updated
+        FROM
+          course AS a
+    </select>
+
+    <insert id="insert">
+    INSERT INTO course (
+      coursename,
+      teacherid,
+      coursetype,
+      courseinfo,
+      teacherinfo,
+      studentnum,
+      pic,
+      created,
+      updated
+    )
+    VALUES
+      (
+        #{coursename},
+        #{teacherid},
+        #{coursetype},
+        #{courseinfo},
+        #{teacherinfo},
+        #{studentnum},
+        #{pic},
+        #{created},
+        #{updated}
+      )
+    </insert>
+
+    <delete id="delete">
+      DELETE FROM course WHERE courseid = #{courseid}
+    </delete>
+
+    <select id="getById" resultType="Course">
+    SELECT
+      a.courseid,
+      a.coursename,
+      a.teacherid,
+      a.coursetype,
+      a.courseinfo,
+      a.teacherinfo,
+      a.studentnum,
+      a.pic,
+      a.updated
+    FROM
+      course AS a
+    WHERE
+      a.courseid = #{courseid}
+    </select>
+
+    <select id="getByTeacherId" resultType="Course">
+    SELECT
+      a.courseid,
+      a.coursename,
+      a.teacherid,
+      a.coursetype,
+      a.courseinfo,
+      a.teacherinfo,
+      a.studentnum,
+      a.pic,
+      a.updated
+    FROM
+      course AS a
+    WHERE
+      a.teacherid = #{teacherid}
+    </select>
+
+    <update id="update">
+    UPDATE
+      course
+    SET
+      coursename = #{coursename},
+      teacherid = #{teacherid},
+      coursetype = #{coursetype},
+      courseinfo = #{courseinfo},
+      teacherinfo = #{teacherinfo},
+      studentnum = #{studentnum},
+      pic = #{pic},
+      updated = #{updated}
+    WHERE courseid = #{courseid}
+    </update>
+
+    <!-- 模糊匹配-->
+    <select id="selectByUsername" resultType="Course">
+    SELECT
+      a.courseid,
+      a.coursename,
+      a.teacherid,
+      a.coursetype,
+      a.courseinfo,
+      a.teacherinfo,
+      a.studentnum,
+      a.pic,
+      a.created,
+      a.updated
+    FROM
+      course AS a
+    WHERE
+      a.coursename LIKE CONCAT ('%', #{coursename}, '%')
+    </select>
+
+    <select id="search" resultType="Course">
+        SELECT
+        a.courseid,
+        a.coursename,
+        a.teacherid,
+        a.coursetype,
+        a.courseinfo,
+        a.teacherinfo,
+        a.studentnum,
+        a.pic,
+        a.created,
+        a.updated
+        FROM
+        course AS a
+        <where>
+            <if test="coursename!=null and coursename!=''">
+                OR a.coursename LIKE CONCAT ('%',#{coursename},'%')
+            </if>
+            <if test="coursetype!=null and coursetype!=''">
+                OR a.coursetype LIKE CONCAT ('%',#{coursetype},'%')
+            </if>
+        </where>
+    </select>
+    <delete id="deleteMulti">
+        DELETE FROM course
+        WHERE courseid IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

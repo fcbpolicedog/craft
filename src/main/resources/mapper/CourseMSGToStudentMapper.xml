@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.policedog.craftadmin.dao.CourseMSGToStudentDAO">
+    <select id="selectAll" resultType="CourseMSGToStudent">
+        SELECT
+          a.id,
+          a.reciverid,
+          a.content,
+          a.created
+        FROM
+          coursemsgtostudent AS a
+    </select>
+
+    <insert id="insert">
+    INSERT INTO coursemsgtostudent (
+          reciverid,
+          content,
+          created
+    )
+    VALUES
+      (
+        #{reciverid},
+        #{content},
+        #{created}
+      )
+    </insert>
+
+
+    <select id="getById" resultType="CourseMSGToStudent">
+    SELECT
+      a.id,
+      a.reciverid,
+      a.content,
+      a.created
+    FROM
+      coursemsgtostudent AS a
+    WHERE
+      a.id = #{id}
+    </select>
+
+    <update id="update">
+    UPDATE
+      coursemsgtostudent
+    SET
+      id = #{id},
+      reciverid = #{reciverid},
+      content = #{content},
+      created = #{created}
+    WHERE id = #{id}
+    </update>
+
+    <delete id="deleteMultiByReciverId">
+        DELETE FROM coursemsgtostudent
+        WHERE reciverid IN
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
